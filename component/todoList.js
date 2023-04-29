@@ -1,3 +1,5 @@
+import { TodoListItem } from "./TodoListItem.js";
+
 /**
  * @typedef {object} TodoList
  * @property {number} id
@@ -9,6 +11,10 @@
 export class TodoList {
   /**@type {Todo[]} */
   #todos = [];
+
+  /**@type {HTMLUlElement} */
+  #listElement;
+
   /**
    *
    * @param {Todo[]} todos
@@ -63,6 +69,31 @@ export class TodoList {
   </main> 
     `;
 
-    const list = "";
+    this.#listElement = el.querySelector(".list-group");
+    for (let todo of this.#todos) {
+      const t = new TodoListItem(todo);
+      this.#listElement.append(t.element);
+    }
+    el.querySelector("form").addEventListener("submit", (e) =>
+      this.onSubmit(e)
+    );
+  }
+  /**
+   *
+   * @param {SubmitEvent} e
+   */
+  onSubmit(e) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const title = new FormData(form).get("title").toString().trim();
+    if (title === "") return;
+    const todo = {
+      id: Date.now(),
+      title,
+      completed: false,
+    };
+    const item = new TodoListItem(todo);
+    this.#listElement.prepend(item.element);
+    form.reset();
   }
 }

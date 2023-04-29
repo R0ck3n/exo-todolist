@@ -1,4 +1,4 @@
-import { createElement } from "../functions/dom";
+import { createElement } from "../functions/dom.js";
 
 export class TodoListItem {
   #element;
@@ -16,6 +16,7 @@ export class TodoListItem {
       type: "checkbox",
       class: "form-check-input",
       id,
+      checked: todo.completed ? "" : null,
     });
 
     const label = createElement("label", {
@@ -30,13 +31,27 @@ export class TodoListItem {
     });
     button.innerHTML = '<i class="bi-trash"> </i>';
     li.append(checkbox, label, button);
+
+    button.addEventListener("click", (e) => this.remove(e));
+
+    this.#element = li;
   }
 
   /**
    *
-   * @param {HTMLElement} element
+   * @return {HTMLElement}
+   *
    */
-  appendTo(element) {
-    element.append(this.#element);
+  get element() {
+    return this.#element;
+  }
+
+  /**
+   *
+   * @param {PointerEvent} e
+   */
+  remove(e) {
+    e.preventDefault();
+    this.#element.remove();
   }
 }
