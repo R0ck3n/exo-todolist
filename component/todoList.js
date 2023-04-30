@@ -1,5 +1,4 @@
-import { TodoListItem } from "./TodoListItem.js";
-//rename
+import { TodoListItem } from "./todoListItem.js";
 /**
  * @typedef {object} TodoList
  * @property {number} id
